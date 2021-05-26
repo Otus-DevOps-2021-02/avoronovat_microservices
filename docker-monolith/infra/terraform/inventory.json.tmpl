@@ -2,7 +2,7 @@
  "app": {
     "hosts": {
       %{ for ip in app-ip ~}
-      "${ip}": null
+      "${ip}": null,
       %{ endfor ~}
     }
  }
