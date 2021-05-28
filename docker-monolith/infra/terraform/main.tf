@@ -26,6 +26,7 @@ resource "yandex_compute_instance" "app" {
   boot_disk {
     initialize_params {
       image_id = "${yandex_compute_image.ubuntu_img.id}"
+      size = 10
     }
   }
 
