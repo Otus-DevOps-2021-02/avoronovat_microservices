@@ -9,7 +9,7 @@ COPY mongod.conf /etc/mongod.conf
 COPY db_config /reddit/db_config
 COPY start.sh /start.sh
 
-RUN cd /reddit && sed -i 's/1.16.1/2.2.17/g' Gemfile.lock && bundle install
+RUN cd /reddit && rm Gemfile.lock && bundle install
 RUN chmod 0777 /start.sh
 
 CMD ["/start.sh"]
