@@ -1,0 +1,35 @@
+---
+- name: get docker dep for python and start container
+  hosts: app
+  become: true
+  tasks:
+    - name: install python dependencies (pip)
+      apt:
+        update_cache: yes
+        state: latest
+        name: python3-pip
+
+    - name: install 'Docker SDK for Python'
+      pip:
+        name: docker
+
+    # - docker_image:
+    #     name: hello-world
+    #     source: pull
+    # - docker_container:
+    #     name: hello-world
+    #     state: started
+
+    - name: get image
+      docker_image:
+        name: avoronovat/otus-reddit:1.0
+        source: pull
+
+    - name: create and start container
+      docker_container:
+        name: otus-reddit
+        image: avoronovat/otus-reddit:1.0
+        state: started
+        recreate: yes
+        ports:
+          - "9292:9292"

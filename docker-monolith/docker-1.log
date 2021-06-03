@@ -1,0 +1,8 @@
+REPOSITORY                   TAG       IMAGE ID       CREATED          SIZE
+avoronovat/ubuntu-tmp-file   latest    5a8c8c08225c   45 seconds ago   63.1MB
+ubuntu                       18.04     4eb8f7c43909   2 weeks ago      63.1MB
+hello-world                  latest    d1165f221234   2 months ago     13.3kB
+
+
+образ статичен, состоит из слоев, имеет внутри себя ссылки на "предыдущие" слои, настроек минимум
+конейнер содержит настройки необходимые для запуска, ссылкается на образ на основе которого создан
