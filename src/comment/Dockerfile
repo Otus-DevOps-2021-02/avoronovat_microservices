@@ -1,35 +1,12 @@
-FROM alpine:3.13
-RUN apk --no-cache update \
-&& apk add ruby \
-       ruby-etc \
-       ruby-bigdecimal \
-       ruby-io-console \
-       ruby-irb \
-       ca-certificates \
-       libressl \
-       less \
-&& apk add --virtual .build-dependencies \
-       build-base \
-       ruby-dev \
-       libressl-dev \
-&& gem install bundler -v '~> 1.17.2' || apk add ruby-bundler \
-&& bundle config build.nokogiri --use-system-libraries \
-&& bundle config git.allow_insecure true \
-&& gem install json \
-&& gem cleanup \
-#&& apk del .build-dependencies \
-&& rm -rf /usr/lib/ruby/gems/*/cache/* \
-          /var/cache/apk/* \
-          /tmp/* \
-          /var/tmp/*
-          
+FROM ruby:2.2
+RUN apt-get update -qq && apt-get install -y build-essential
+
 ENV APP_HOME /app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
-
 ADD Gemfile* $APP_HOME/
 RUN bundle install
-ADD . $APP_HOME
+COPY . $APP_HOME
 
 ENV COMMENT_DATABASE_HOST comment_db
 ENV COMMENT_DATABASE comments
