@@ -38,7 +38,7 @@ deploy_dev_job:
     name: dev
     url: http://dev.example.com
 
-staging:
+stage:
   stage: stage
   when: manual
   only:
@@ -48,6 +48,7 @@ staging:
   environment:
     name: stage
     url: http://beta.example.com
+
 production:
   stage: production
   when: manual
