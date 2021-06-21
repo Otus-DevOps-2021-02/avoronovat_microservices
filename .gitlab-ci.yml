@@ -20,11 +20,11 @@ build_job:
 
 reddit_app_install_job:
   stage: build
-  image: docker/compose
+  image: avoronovat/ottus-reddit
   script:
     - echo 'Start reddit app in container'
-    - docker-compose -f src/docker-compose.yml up -d
-    - docker-compose -f src/docker-compose.yml ps
+#    - docker-compose -f src/docker-compose.yml up -d
+#    - docker-compose -f src/docker-compose.yml ps
 #  after_script:
 #    - docker-compose -f src/docker-compose.yml down || true
 
