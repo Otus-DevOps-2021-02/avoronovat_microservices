@@ -25,6 +25,18 @@ services:
     networks:
       - back_net
       - fron_net
+# try blackbox_exporter
+  blackbox_exporter:
+    image: prom/blackbox-exporter:master
+    ports:
+      - "9115:9115"
+    networks:
+      - fron_net
+      - back_net
+    volumes:
+      - ./config:/config
+#    command: --config.file=/config/blackbox.yml
+
   prometheus:
     image: ${USERNAME}/prometheus
     ports:
