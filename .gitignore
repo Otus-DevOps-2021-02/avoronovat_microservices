@@ -6,3 +6,5 @@
 *.retry
 packer/variables.json
 !packer/variables.json.examples
+.env
+!.env.example

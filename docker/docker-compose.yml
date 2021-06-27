@@ -1,0 +1,82 @@
+version: '3.3'
+services:
+  post_db:
+    image: mongo:3.2
+    volumes:
+      - post_db:/data/db
+    networks:
+      - back_net
+  ui:
+#    build: ./ui
+    image: ${USERNAME}/ui:${UIVER}
+    ports:
+      - ${UIPORT}:9292/tcp
+    networks:
+      - fron_net
+  post:
+#    build: ./post-py
+    image: ${USERNAME}/post:${POSTVER}
+    networks:
+      - back_net
+      - fron_net
+  comment:
+#    build: ./comment
+    image: ${USERNAME}/comment:${COMVER}
+    networks:
+      - back_net
+      - fron_net
+# try blackbox_exporter
+  blackbox_exporter:
+    image: prom/blackbox-exporter:master
+    ports:
+      - "9115:9115"
+    networks:
+      - fron_net
+      - back_net
+    volumes:
+      - ./config:/config
+#    command: --config.file=/config/blackbox.yml
+
+  prometheus:
+    image: ${USERNAME}/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d'
+    networks:
+      - back_net
+      - fron_net
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"'
+    networks:
+      - back_net
+      - fron_net
+
+volumes:
+  post_db:
+  prometheus_data:
+
+networks:
+  back_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.10.2.0/24"
+  fron_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "10.10.1.0/24"
